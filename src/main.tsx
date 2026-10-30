@@ -723,7 +723,7 @@ function App() {
               重置演示
             </button>
           )}
-          <small>Combat Panel 0.5.0</small>
+          <small>Combat Panel 0.5.1</small>
         </section>
       )}
       <dialog

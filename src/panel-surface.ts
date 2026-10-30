@@ -21,31 +21,29 @@ export function connectActionLauncher(onError: (error: unknown) => void) {
   let stopped = false;
   let busy = false;
   let off: (() => void) | undefined;
-  async function toggle() {
+  async function openPanel() {
     if (stopped || busy) return;
     busy = true;
     try {
-      const height = await OBR.popover.getHeight(FLOATING_PANEL_ID);
-      if (stopped) return;
-      if (height !== undefined) {
-        await OBR.popover.close(FLOATING_PANEL_ID);
-      } else {
-        const theme = await OBR.theme.getTheme();
-        if (stopped) return;
-        await OBR.popover.open({
-          id: FLOATING_PANEL_ID,
-          url: `${FLOATING_PANEL_URL}&theme=${theme.mode.toLowerCase()}`,
-          width: PANEL_WIDTH,
-          height: PANEL_MIN_HEIGHT,
-          anchorReference: "POSITION",
-          anchorPosition: { left: 16, top: 64 },
-          anchorOrigin: { horizontal: "LEFT", vertical: "TOP" },
-          transformOrigin: { horizontal: "LEFT", vertical: "TOP" },
-          hidePaper: true,
-          disableClickAway: true,
-          marginThreshold: 8,
-        });
-      }
+      // Never query an unopened popover: some hosts leave GET_HEIGHT pending.
+      // Theme sync happens inside the visible panel and must not block opening.
+      const scheme = globalThis.matchMedia?.("(prefers-color-scheme: dark)")
+        .matches
+        ? "dark"
+        : "light";
+      await OBR.popover.open({
+        id: FLOATING_PANEL_ID,
+        url: `${FLOATING_PANEL_URL}&theme=${scheme}`,
+        width: PANEL_WIDTH,
+        height: PANEL_MIN_HEIGHT,
+        anchorReference: "POSITION",
+        anchorPosition: { left: 16, top: 64 },
+        anchorOrigin: { horizontal: "LEFT", vertical: "TOP" },
+        transformOrigin: { horizontal: "LEFT", vertical: "TOP" },
+        hidePaper: true,
+        disableClickAway: true,
+        marginThreshold: 8,
+      });
       if (!stopped) await OBR.action.close();
     } catch (error) {
       if (!stopped) onError(error);
@@ -63,9 +61,9 @@ export function connectActionLauncher(onError: (error: unknown) => void) {
       ]);
       if (stopped) return;
       off = OBR.action.onOpenChange((open) => {
-        if (open) void toggle();
+        if (open) void openPanel();
       });
-      if (await OBR.action.isOpen()) await toggle();
+      if (await OBR.action.isOpen()) await openPanel();
     } catch (error) {
       if (!stopped) onError(error);
     }

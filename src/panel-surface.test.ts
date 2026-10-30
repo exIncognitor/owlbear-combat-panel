@@ -32,7 +32,8 @@ vi.mock("@owlbear-rodeo/sdk", () => ({
       },
     },
     popover: {
-      getHeight: vi.fn(async () => m.height),
+      // Reproduce the real host's no-response behavior for a missing popover.
+      getHeight: vi.fn(() => new Promise<number | undefined>(() => {})),
       open: vi.fn(async (options) => {
         m.height = options.height;
       }),
@@ -44,7 +45,7 @@ vi.mock("@owlbear-rodeo/sdk", () => ({
       }),
     },
     theme: {
-      getTheme: async () => ({ mode: m.mode }),
+      getTheme: vi.fn(async () => ({ mode: m.mode })),
       onChange: (fn: (theme: { mode: "DARK" | "LIGHT" }) => void) => {
         m.onTheme = fn;
         return () => {
@@ -65,6 +66,7 @@ import {
   connectActionLauncher,
   watchFloatingSize,
   syncPanelColorScheme,
+  closeFloatingPanel,
 } from "./panel-surface";
 
 beforeEach(() => {
@@ -76,6 +78,7 @@ beforeEach(() => {
   m.dialogOpen = false;
   m.mode = "DARK";
   m.onTheme = undefined;
+  vi.stubGlobal("matchMedia", () => ({ matches: true }));
   vi.stubGlobal(
     "ResizeObserver",
     class {
@@ -109,12 +112,14 @@ it("clamps the panel height and reserves space for an open editor", () => {
   expect(panelHeight(170, true)).toBe(PANEL_MAX_HEIGHT);
 });
 
-it("uses a transparent popover and toggles it with the existing action", async () => {
+it("opens without the pending height query and can reopen after an explicit close", async () => {
   const error = vi.fn();
   const stop = connectActionLauncher(error);
   await vi.waitFor(() => expect(OBR.action.close).toHaveBeenCalledTimes(1));
   expect(OBR.action.setWidth).toHaveBeenCalledWith(PANEL_WIDTH);
   expect(OBR.action.setHeight).toHaveBeenCalledWith(PANEL_MIN_HEIGHT);
+  expect(OBR.popover.getHeight).not.toHaveBeenCalled();
+  expect(OBR.theme.getTheme).not.toHaveBeenCalled();
   expect(OBR.popover.open).toHaveBeenCalledWith(
     expect.objectContaining({
       id: FLOATING_PANEL_ID,
@@ -124,12 +129,12 @@ it("uses a transparent popover and toggles it with the existing action", async (
       disableClickAway: true,
     }),
   );
+  await closeFloatingPanel();
+  expect(OBR.popover.close).toHaveBeenCalledWith(FLOATING_PANEL_ID);
   m.actionOpen = true;
   m.onOpen?.(true);
-  await vi.waitFor(() =>
-    expect(OBR.popover.close).toHaveBeenCalledWith(FLOATING_PANEL_ID),
-  );
-  expect(OBR.popover.open).toHaveBeenCalledTimes(1);
+  await vi.waitFor(() => expect(OBR.popover.open).toHaveBeenCalledTimes(2));
+  expect(OBR.popover.getHeight).not.toHaveBeenCalled();
   expect(error).not.toHaveBeenCalled();
   stop();
   expect(m.onOpen).toBeUndefined();
@@ -148,12 +153,10 @@ it("matches the host color scheme and follows subsequent theme changes", async (
 
 it("reports launcher failures instead of silently leaving a blank action", async () => {
   const error = vi.fn();
-  vi.mocked(OBR.popover.getHeight).mockRejectedValueOnce(
-    new Error("Disconnected"),
-  );
+  vi.mocked(OBR.popover.open).mockRejectedValueOnce(new Error("Disconnected"));
   const stop = connectActionLauncher(error);
   await vi.waitFor(() => expect(error).toHaveBeenCalled());
-  expect(OBR.popover.open).not.toHaveBeenCalled();
+  expect(OBR.action.close).not.toHaveBeenCalled();
   stop();
 });
 
