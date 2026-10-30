@@ -9,6 +9,7 @@
 - 图片证据：qa/v05-compact.png、qa/v05-translucent.png、qa/v05-translucent-dark-host.png。背景为本地测试网格，不是真实 Owlbear 场景截图。
 - 透明浮层通过官方 Popover API 的 hidePaper: true 实现；原动作页仍为 /panel.html，真实面板为同一路径的 surface=floating 模式。点击地图保持面板显示，右上 × 关闭。
 - 用户要求真实房间测试自行进行，本次未进入房间。新浮层的真实平台开关、地图透出与场景交互仍由用户验收；模拟 SDK 测试不替代该验收。
+- 已在原 Pages 项目发布 v0.5.0；10 个生产静态文件与本地构建 SHA-256 逐项一致，浮层路径的查询参数在 .html 规范化跳转后保留，manifest/CORS/CSP/缓存头通过。产品源码为 17ffa8d51a381bd17d3bca95b48f95457b5abbb0。
 
 恢复起点为 Git 提交 d96bc1074de64e1ba351378df41febe335971f81。以下保留先前版本的历史记录。
 
