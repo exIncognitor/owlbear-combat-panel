@@ -9,23 +9,23 @@
 - 插件入口：https://owlbear-combat-panel.pages.dev/panel.html
 - Owlbear 安装地址：https://owlbear-combat-panel.pages.dev/manifest.json
 
-当前是 Cloudflare Pages 免费 Direct Upload 项目，已发布 v0.5.0。上传包为 DEPLOY-READY-v0.5.0.zip（dist 根目录的 11 个文件），产品源码提交 17ffa8d51a381bd17d3bca95b48f95457b5abbb0，ZIP 的 SHA-256 为 0bf897bd41bca353cec0666bae68f6511fb3176486b1d87c2efa5e2f0b17055b。
+当前是 Cloudflare Pages 免费 Direct Upload 项目，已发布 v0.5.1。上传包为 DEPLOY-READY-v0.5.1.zip（dist 根目录的 11 个文件），产品源码提交 a161d5f001f1f8c349d45a1728054d34e5c9b1d2，ZIP 的 SHA-256 为 0a8d9c949ae5f2acbd3f8f5ac0c2a17d5f674d4f0482c7e0bae10a64fd209798。
 
-Cloudflare 已返回部署成功；生产端 10 个可访问静态文件逐项 SHA-256 与本地构建一致（_headers 通过实际响应头验证），manifest 版本为 0.5.0。交叉双剑图标带版本查询参数 /icon.svg?v=0.5.0，动作页仍指向 /panel.html。浮层路径 /panel.html?surface=floating&theme=dark 的规范化跳转已确认保留查询参数并返回当前面板代码。后续纯文档提交不改变此生产构建。
+Cloudflare 已返回部署成功；生产端 10 个可访问静态文件逐项 SHA-256 与本地构建一致（_headers 通过实际响应头验证），manifest 版本为 0.5.1。交叉双剑图标带版本查询参数 /icon.svg?v=0.5.1，动作页仍指向 /panel.html。浮层路径 /panel.html?surface=floating&theme=dark 的规范化跳转已确认保留查询参数并返回当前面板代码。发布成功截图为 qa/v051-deploy-success.png，仅本地保留。后续纯文档提交不改变此生产构建。
 
-原 DEPLOY-READY.zip 与 standalone-demo.html 保留为 v0.3 交接产物，对应旧源码 31afb98ffffebe7fbb48059b00ea123d8096be0c；后续旧版本部署包也保留。当前改动的 Git 恢复起点为 d96bc1074de64e1ba351378df41febe335971f81。
+原 DEPLOY-READY.zip 与 standalone-demo.html 保留为 v0.3 交接产物，对应旧源码 31afb98ffffebe7fbb48059b00ea123d8096be0c；后续旧版本部署包也保留。本次启动修复的 Git 恢复起点为 51e2d45b5b0126ab5c3f6cc95fdf7b41c0210ebc。
 
 **当前未连接 Git 自动部署。** GitHub 推送不会自动更新站点；产品代码修改后需要重新运行 npm ci、npm test、npm run build，并在该 Pages 项目创建生产部署，上传 dist 内容。Direct Upload 与 Git 集成是不同的项目模式；如未来改用 Git 自动构建，应另行按 Cloudflare 当前支持的迁移/新建流程处理，并由所有者完成所需授权。
 
 生产检查已确认 /panel.html 会规范化到 /panel 并保持面板内容，manifest 返回 application/json、CORS 为 *、Cache-Control 为 no-cache，页面 CSP 允许 Owlbear 嵌入且未设置 X-Frame-Options。
 
-历史 v0.3 清单曾在专用 Owlbear 测试房间安装并启用，匿名玩家端加载成功；当时 DM 端弹层空白及完整双端联测未完成。本次 v0.5 按用户要求仅做本地基准测试和生产文件核对，真实 Owlbear 测试由用户进行，详情见 TEST-REPORT.md。既有临时 Sites 预览保持原状，不是此处的最终安装地址。
+历史 v0.3 清单曾在专用 Owlbear 测试房间安装并启用，匿名玩家端加载成功；当时 DM 端弹层空白及完整双端联测未完成。本次 v0.5.1 按用户要求仅做本地基准测试和生产文件核对，真实 Owlbear 测试由用户进行，详情见 TEST-REPORT.md。既有临时 Sites 预览保持原状，不是此处的最终安装地址。
 
 ## v0.5 透明浮层
 
-Manifest 的 260×96 是动作启动页尺寸。启动后使用 [Popover API](https://docs.owlbear.rodeo/extensions/apis/popover/) 的 hidePaper: true 显示 260px 宽的透明浮层，内容高度自适应到 96–420px。双剑图标切换浮层，面板右上 × 也可关闭；点击地图不会自动关闭。使用 [Theme API](https://docs.owlbear.rodeo/extensions/apis/theme/) 同步底层色系，以免浏览器为不同色系的 iframe 填入底色。旧房间无需迁移效果数据。
+Manifest 的 260×96 是动作启动页尺寸。启动后使用 [Popover API](https://docs.owlbear.rodeo/extensions/apis/popover/) 的 hidePaper: true 显示 260px 宽的透明浮层，内容高度自适应到 96–420px。双剑图标用于打开浮层，面板右上 × 关闭；点击地图不会自动关闭。使用 [Theme API](https://docs.owlbear.rodeo/extensions/apis/theme/) 在已显示的面板中同步底层色系，以免浏览器为不同色系的 iframe 填入底色。v0.5.1 直接打开浮层，不再先查询尚未创建浮层的高度，也不等待读取主题，从而移除用户报告的 GET_HEIGHT 启动超时路径。旧房间无需迁移效果数据；部署后刷新整个 Owlbear 房间页面，再点击双剑图标，无需重新安装。
 
-该流程已做模拟 SDK 和本地 iframe 回归，真实 Owlbear 的浮层开关、主题切换、场景交互需由用户验收。
+该流程已做模拟 SDK 和本地 iframe 回归，真实 Owlbear 的浮层打开与关闭、主题切换、场景交互需由用户验收。
 
 ## 从 GitHub 连接 Pages
 

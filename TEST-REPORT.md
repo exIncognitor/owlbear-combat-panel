@@ -8,6 +8,7 @@
 
 - npm test：53 项通过。新的回归 mock 让 getHeight 永不返回，验证面板仍能发起 open 且完全不调用 getHeight，也不在启动时等待读取主题；验证关闭后再次打开。
 - npm run test:e2e：18 组通过；npm run build 的 TypeScript 与生产构建通过。
+- 已在原 Pages 项目发布 v0.5.1；10 个生产静态文件的 SHA-256 与本地构建逐项一致，manifest 版本与图标参数、CORS、缓存头、嵌入 CSP 和浮层查询参数保留均通过。产品源码为 a161d5f001f1f8c349d45a1728054d34e5c9b1d2，部署成功截图为 qa/v051-deploy-success.png，仅本地保留。
 - 本次未操作 Owlbear 房间；真实平台修复效果仍由用户刷新页面后验收。
 - Git 恢复起点为 51e2d45b5b0126ab5c3f6cc95fdf7b41c0210ebc。
 
