@@ -9,7 +9,8 @@
 - npm test：53 项通过；覆盖 SDK ready 之前不发消息、原生尺寸、内容增减、编辑器高度、卸载清理以及延迟宽度响应不阻塞高度。
 - 新增 tests/action.spec.ts，以真实 SDK 加本地消息宿主走非演示加载路径。模拟实际的 normal 色系和半透明底板，在系统浅色/深色偏好下检查内容、20.5/20、顶部 0px、260px 宽度、没有面板关闭按钮、图标关闭再打开、编辑器 420px，以及没有 Popover/Action.close 调用。
 - 像素回归比较 iframe 内空白区域在两种宿主背景下的截图，要求背景变化能透过画布；不再只凭 CSS 的 alpha 值判定透明。
-- npm run build：TypeScript 与 Vite 生产构建通过。npm run test:e2e：20 组通过，包含新增的两组实际 SDK 本地宿主模拟。截图 qa/v052-native-action-light.png、qa/v052-native-action-dark.png、qa/v052-action-canvas.png 仅本地保存，均非真实房间截图；当前生产仍为 v0.5.1，发布后另记核对结果。
+- npm run build：TypeScript 与 Vite 生产构建通过。npm run test:e2e：20 组通过，包含新增的两组实际 SDK 本地宿主模拟。截图 qa/v052-native-action-light.png、qa/v052-native-action-dark.png、qa/v052-action-canvas.png 仅本地保存，均非真实房间截图。
+- 已发布 v0.5.2，产品源码 7e9ea71d73295a5948e54a097dd15b5273a18e31。生产端 10 个静态文件的 SHA-256 与本地构建逐项一致，manifest/图标版本、CORS、缓存、嵌入 CSP、没有 X-Frame-Options 及 .html 跳转保留 SDK 查询参数均通过；发布成功凭证为 qa/v052-deploy-success.png，仅本地保留。
 - 只读样式核对没有点击房间按钮、刷新房间或写入 metadata；真实开关、地图交互和双端功能测试仍由用户进行，不能将本地宿主模拟算作真实房间通过。
 - Git 恢复起点：54fd2bc1309553982bcc0a0c8e6a33011f09d9c5。
 
