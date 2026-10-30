@@ -1,12 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import OBR from "@owlbear-rodeo/sdk";
-import {
-  connectActionLauncher,
-  watchFloatingSize,
-  closeFloatingPanel,
-  syncPanelColorScheme,
-} from "./panel-surface";
+import { watchActionSize } from "./panel-surface";
 import { createAdapter, type Snapshot, type Change } from "./adapter";
 import {
   type Effect,
@@ -21,14 +15,11 @@ import {
 } from "./model";
 import "./style.css";
 const adapter = createAdapter();
-const floating =
-  new URLSearchParams(location.search).get("surface") === "floating";
 document.documentElement.dataset.surface =
-  OBR.isAvailable || floating ? "overlay" : "demo";
-const initialTheme = new URLSearchParams(location.search).get("theme");
-if (initialTheme === "dark" || initialTheme === "light") {
-  document.documentElement.style.colorScheme = initialTheme;
-}
+  !adapter.demo ||
+  new URLSearchParams(location.search).get("surface") === "action"
+    ? "action"
+    : "demo";
 const empty: Snapshot = {
   viewer: { id: "", role: "PLAYER" },
   characters: [],
@@ -128,13 +119,8 @@ function App() {
     dialogRef = useRef<HTMLDialogElement>(null);
   const gm = s.viewer.role === "GM";
   useEffect(() => {
-    if (floating && !adapter.demo && panelRef.current) {
-      const stopSizing = watchFloatingSize(panelRef.current);
-      const stopTheme = syncPanelColorScheme(document.documentElement);
-      return () => {
-        stopSizing();
-        stopTheme();
-      };
+    if (!adapter.demo && panelRef.current) {
+      return watchActionSize(panelRef.current);
     }
   }, []);
   useEffect(() => adapter.subscribe(setS), []);
@@ -300,17 +286,6 @@ function App() {
             onClick={() => setTab("about")}
           >
             <Icon kind="info" />
-          </button>
-        )}
-        {floating && (
-          <button
-            className="icon"
-            aria-label="关闭面板"
-            title="关闭面板"
-            disabled={adapter.demo || busy}
-            onClick={() => run(closeFloatingPanel)}
-          >
-            <Icon kind="close" />
           </button>
         )}
       </header>
@@ -838,19 +813,4 @@ function EffectEditor({
     </form>
   );
 }
-function PanelLauncher() {
-  const [error, setError] = useState("");
-  useEffect(() => connectActionLauncher((e) => setError(String(e))), []);
-  return (
-    <main className="launching-panel">
-      <p role={error ? "alert" : "status"}>
-        {error ? `无法打开面板：${error}` : "正在打开战斗序列…"}
-      </p>
-      {error && <button onClick={() => location.reload()}>重试</button>}
-    </main>
-  );
-}
-
-createRoot(document.getElementById("root")!).render(
-  OBR.isAvailable && !floating ? <PanelLauncher /> : <App />,
-);
+createRoot(document.getElementById("root")!).render(<App />);

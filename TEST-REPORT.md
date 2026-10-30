@@ -1,6 +1,19 @@
-# 测试报告 · v0.5.1 · 2026-10-30
+# 测试报告 · v0.5.2 · 2026-10-30
 
-## v0.5.1 启动超时回归
+## v0.5.2 原生 Action 与透明画布回归
+
+用户报告上一版无法通过图标关闭、顶部间距偏大、面板不透明。本次参照 [官方 Initiative Tracker 源码](https://github.com/owlbear-rodeo/initiative-tracker/tree/9cb103fd7874d808501251f9aee5c0349ff65c9e)，移除额外 Popover、启动页、固定坐标及面板关闭按钮。/panel.html 直接渲染既有 App，仅通过 Action API 调整尺寸，由平台管理图标开关和位置。
+
+只读核对了当时已打开的参考面板：Owlbear 的 html/body、原生 Action 容器及官方插件 iframe 画布均使用 color-scheme: normal；原生底板背景为 rgba(30, 34, 49, 0.6)，叠加 5% 白色渐变。此前将深色 UI 主题强制写为 iframe 的 dark 色系，会使浏览器在透明画布下补底。现已移除主题写入，真实 Action 中 html/body/main 透明，main 不再叠加边框、阴影或背景。
+
+- npm test：53 项通过；覆盖 SDK ready 之前不发消息、原生尺寸、内容增减、编辑器高度、卸载清理以及延迟宽度响应不阻塞高度。
+- 新增 tests/action.spec.ts，以真实 SDK 加本地消息宿主走非演示加载路径。模拟实际的 normal 色系和半透明底板，在系统浅色/深色偏好下检查内容、20.5/20、顶部 0px、260px 宽度、没有面板关闭按钮、图标关闭再打开、编辑器 420px，以及没有 Popover/Action.close 调用。
+- 像素回归比较 iframe 内空白区域在两种宿主背景下的截图，要求背景变化能透过画布；不再只凭 CSS 的 alpha 值判定透明。
+- npm run build：TypeScript 与 Vite 生产构建通过。npm run test:e2e：20 组通过，包含新增的两组实际 SDK 本地宿主模拟。截图 qa/v052-native-action-light.png、qa/v052-native-action-dark.png、qa/v052-action-canvas.png 仅本地保存，均非真实房间截图；当前生产仍为 v0.5.1，发布后另记核对结果。
+- 只读样式核对没有点击房间按钮、刷新房间或写入 metadata；真实开关、地图交互和双端功能测试仍由用户进行，不能将本地宿主模拟算作真实房间通过。
+- Git 恢复起点：54fd2bc1309553982bcc0a0c8e6a33011f09d9c5。
+
+## v0.5.1 启动超时回归（历史记录）
 
 用户真实房间截图报告：OBR_POPOVER_GET_HEIGHT 超过 5000ms 无结果。v0.5.0 将查询未创建浮层的高度作为存在性检查，随后才调用 open，因此查询超时直接阻塞面板。原模拟将缺失浮层的查询立即返回 undefined，未覆盖这一实际现象。
 

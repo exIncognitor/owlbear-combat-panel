@@ -11,7 +11,9 @@
   --control-surface: rgb(35 31 46 / 78%);
   font-size: 14px;
   font-synthesis: none;
-  color-scheme: light;
+  /* Match Owlbear's native action and the official tracker canvas.
+     Its dark UI still uses a normal-scheme host; forcing dark adds a solid fill. */
+  color-scheme: normal;
 }
 * {
   box-sizing: border-box;
@@ -83,6 +85,12 @@ main {
   box-shadow: 0 4px 14px #0003;
   text-shadow: 0 1px 2px #000d;
 }
+html[data-surface="action"] main {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
 .toolbar {
   height: 42px;
   display: flex;
@@ -91,7 +99,7 @@ main {
   padding: 6px;
   border-bottom: 1px solid #b9a8ca44;
   border-radius: 9px 9px 0 0;
-  background: #211d2c22;
+  background: transparent;
 }
 .toolbar h1 {
   font-size: 15px;
@@ -550,20 +558,8 @@ dialog textarea {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-.launching-panel {
-  padding: 12px;
-  font-size: 12px;
-}
-.launching-panel p {
-  margin: 0 0 6px;
-}
 @media (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;
-  }
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
   }
 }

@@ -1,18 +1,17 @@
 # 战斗序列 · Owlbear Rodeo 战斗面板
 
-一个中文 Owlbear Rodeo 扩展原型，使用官方 `@owlbear-rodeo/sdk` 3.1.0、React、TypeScript 和 Vite。版本 0.5.1。
+一个中文 Owlbear Rodeo 扩展原型，使用官方 `@owlbear-rodeo/sdk` 3.1.0、React、TypeScript 和 Vite。版本 0.5.2。
 
-## v0.5.1 启动修复
+## v0.5.2 原生面板修复
 
-去掉打开前的 getHeight 查询：真实房间曾出现 OBR_POPOVER_GET_HEIGHT 超过 5000ms 不返回，导致启动被阻塞。双剑图标现在直接打开浮层，关闭请用面板右上 ×；启动也不再等待读取主题，打开后继续同步宿主主题。刷新整个 Owlbear 房间页面后生效。
+参考 [官方 Initiative Tracker](https://github.com/owlbear-rodeo/initiative-tracker/tree/9cb103fd7874d808501251f9aee5c0349ff65c9e) 的原生 Action 与内容观察方案，在既有实现上调整。/panel.html 现在直接显示战斗面板，双剑图标点击打开、再次点击关闭，由 Owlbear 管理位置和开关；移除额外浮窗、启动页、固定坐标与面板右上角关闭按钮。刷新整个 Owlbear 房间页面后生效，无需重新安装。
 
-## v0.5 紧凑半透明样式
+## 紧凑半透明样式
 
-- 宽度从 340 缩至 260px；取消铺满整页的最小高度，少量角色时不保留大块底部空白。浮层高度随列表、状态选择器和错误提示变化，范围为 96–420px，长内容滚动。效果编辑器打开时留出 420px 高度。
-- 在 Owlbear 内，原 /panel.html 动作页作为启动器，使用官方 Popover API 打开 /panel.html?surface=floating 的同一面板，并设置 hidePaper: true 去掉宿主底板。浮层默认在左上角；双剑图标打开，浮层右上 × 关闭，点击地图不会自动收起。
-- html/body 背景透明，卡片底色为 55% 不透明度；文字和按钮图标保持不透明。状态说明与编辑对话框使用更实的深色底，便于阅读。
-- 按 Owlbear Theme API 同步 iframe 的 color-scheme，避免深浅主题不一致时浏览器补上不透明底色。此浮层和主题同步仅通过官方 SDK，不读取宿主 DOM。
-- 不改房间 metadata 或私有库的存储格式；真实房间验收仍由用户进行。本地已验证窄屏表单、两种宿主主题下的透底预览和尺寸/主题订阅清理。
+- 保留 260px 宽度；Action 高度随列表、状态选择器和错误提示变化，范围为 96–420px，长内容滚动。效果编辑器打开时留出 420px 高度。
+- html/body 与面板在真实 Action 中完全透明，不叠加第二层底色、边框或阴影，透出 Owlbear 原生半透明底板。文字和按钮图标保持清晰；状态说明与编辑对话框使用更实的深色底。
+- iframe 画布使用 color-scheme: normal，与实际宿主和官方先攻插件一致；不把深色 UI 主题强制写成浏览器 dark 色系，以免浏览器补上不透明底色。独立演示保留自己的底板。
+- 不改房间 metadata 或私有库的存储格式；真实房间功能验收仍由用户进行。本地 SDK 宿主模拟覆盖直接加载、图标关闭再打开、顶部无额外空白、尺寸更新与透底像素变化；这些不是完整真实房间测试。
 
 ## v0.4.1 更新
 
@@ -29,7 +28,7 @@
 
 ## 先体验界面
 
-- 交接包原有 standalone-demo.html、DEPLOY-READY.zip 及先前版本部署包保留。当前请使用本地开发服务器或 Pages 站点，新部署包名为 DEPLOY-READY-v0.5.1.zip。
+- 交接包原有 standalone-demo.html、DEPLOY-READY.zip 及先前版本部署包保留。当前请使用本地开发服务器或 Pages 站点，新部署包名为 DEPLOY-READY-v0.5.2.zip。
 - 解压后用桌面浏览器打开 `standalone-demo.html`。这是离线演示，不连接 Owlbear 账号，不修改你的房间。
 - 演示上方可以切换 **DM 视角 / 玩家视角**；真实 Owlbear 房间中没有身份切换按钮，身份来自官方 SDK。
 - 所有示例角色都能由玩家和 DM 修改名称与先攻。
@@ -155,8 +154,8 @@ npm run test:e2e
 - 场景 API：https://docs.owlbear.rodeo/extensions/apis/scene/
 - 房间 API（16 KB 上限）：https://docs.owlbear.rodeo/extensions/apis/room/
 - Metadata：https://docs.owlbear.rodeo/extensions/reference/metadata/
-- 透明浮层（hidePaper）：https://docs.owlbear.rodeo/extensions/apis/popover/
-- 主题同步：https://docs.owlbear.rodeo/extensions/apis/theme/
+- 原生 Action 尺寸：https://docs.owlbear.rodeo/extensions/apis/action/
+- 官方先攻源码：https://github.com/owlbear-rodeo/initiative-tracker
 - 安装扩展：https://extensions.owlbear.rodeo/guide
 
 开发依据查阅时间：2026-10-30。正式安装界面及平台权限需在实际房间复核。
