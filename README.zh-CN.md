@@ -1,6 +1,14 @@
 # 战斗序列 · Owlbear Rodeo 战斗面板
 
-一个中文 Owlbear Rodeo 扩展原型，使用官方 `@owlbear-rodeo/sdk` 3.1.0、React、TypeScript 和 Vite。版本 0.4.1。
+一个中文 Owlbear Rodeo 扩展原型，使用官方 `@owlbear-rodeo/sdk` 3.1.0、React、TypeScript 和 Vite。版本 0.5.0。
+
+## v0.5 紧凑半透明样式
+
+- 宽度从 340 缩至 260px；取消铺满整页的最小高度，少量角色时不保留大块底部空白。浮层高度随列表、状态选择器和错误提示变化，范围为 96–420px，长内容滚动。效果编辑器打开时留出 420px 高度。
+- 在 Owlbear 内，原 /panel.html 动作页作为启动器，使用官方 Popover API 打开 /panel.html?surface=floating 的同一面板，并设置 hidePaper: true 去掉宿主底板。浮层默认在左上角；双剑图标切换显示/关闭，浮层右上 × 也可关闭，点击地图不会自动收起。
+- html/body 背景透明，卡片底色为 55% 不透明度；文字和按钮图标保持不透明。状态说明与编辑对话框使用更实的深色底，便于阅读。
+- 按 Owlbear Theme API 同步 iframe 的 color-scheme，避免深浅主题不一致时浏览器补上不透明底色。此浮层和主题同步仅通过官方 SDK，不读取宿主 DOM。
+- 不改房间 metadata 或私有库的存储格式；真实房间验收仍由用户进行。本地已验证窄屏表单、两种宿主主题下的透底预览和尺寸/主题订阅清理。
 
 ## v0.4.1 更新
 
@@ -17,7 +25,7 @@
 
 ## 先体验界面
 
-- 交接包原有 standalone-demo.html 与 DEPLOY-READY.zip 保留为 v0.3 历史产物，v0.4.0 部署包也保留。当前请使用本地开发服务器或 Pages 站点，新部署包名为 DEPLOY-READY-v0.4.1.zip。
+- 交接包原有 standalone-demo.html、DEPLOY-READY.zip 及先前版本部署包保留。当前请使用本地开发服务器或 Pages 站点，新部署包名为 DEPLOY-READY-v0.5.0.zip。
 - 解压后用桌面浏览器打开 `standalone-demo.html`。这是离线演示，不连接 Owlbear 账号，不修改你的房间。
 - 演示上方可以切换 **DM 视角 / 玩家视角**；真实 Owlbear 房间中没有身份切换按钮，身份来自官方 SDK。
 - 所有示例角色都能由玩家和 DM 修改名称与先攻。
@@ -26,7 +34,7 @@
 
 ## v0.2 紧凑界面
 
-- 面板尺寸 340 × 480 px，标题栏直接使用上一位／下一位箭头，不再显示大回合卡片、头像、归属信息或冗余描述。
+- 当前面板宽 260px、高度自适应。标题栏直接使用上一位／下一位箭头，不再显示大回合卡片、头像、归属信息或冗余描述。
 - DM 与玩家均可切换前后角色、手动添加角色、从地图导入选中的角色 Token、修改面板名称与先攻。
 - 手动角色不需要 Token，但需要打开一个场景。面板名称修改不会重命名地图 Token。
 - 不区分角色归属。DM 专属效果管理权限保持不变；玩家不能移除 DM 添加的状态。
@@ -125,7 +133,7 @@ Owlbear 扩展是一个由 `manifest.json` 引导的网页，被嵌入房间面�
 
 ## 测试
 
-见 `TEST-REPORT.md`。v0.4.1 已通过 TypeScript 检查、生产构建及 48 个逻辑/模拟 SDK 测试，15 组本地浏览器测试通过。历史 v0.3 的真实安装与匿名玩家端加载记录单独保留；真实 Owlbear 测试按用户要求由用户进行，不把模拟测试当作平台验收。
+见 `TEST-REPORT.md`。v0.5.0 已通过 TypeScript 检查、生产构建及 53 个逻辑/模拟 SDK 测试，18 组本地浏览器测试通过。历史平台测试记录单独保留；真实 Owlbear 测试按用户要求由用户进行，不把模拟测试当作平台验收。
 
 在具备浏览器运行能力的环境可执行：
 
@@ -143,6 +151,8 @@ npm run test:e2e
 - 场景 API：https://docs.owlbear.rodeo/extensions/apis/scene/
 - 房间 API（16 KB 上限）：https://docs.owlbear.rodeo/extensions/apis/room/
 - Metadata：https://docs.owlbear.rodeo/extensions/reference/metadata/
+- 透明浮层（hidePaper）：https://docs.owlbear.rodeo/extensions/apis/popover/
+- 主题同步：https://docs.owlbear.rodeo/extensions/apis/theme/
 - 安装扩展：https://extensions.owlbear.rodeo/guide
 
 开发依据查阅时间：2026-10-30。正式安装界面及平台权限需在实际房间复核。

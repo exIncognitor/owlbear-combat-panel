@@ -262,7 +262,7 @@ button {
   left: 30px;
 }
 .panel-preview {
-  width: 342px;
+  width: 262px;
   position: relative;
   z-index: 3;
   border: 1px solid #7e6b9555;
@@ -300,8 +300,8 @@ button {
 }
 .panel-preview iframe {
   display: block;
-  width: 340px;
-  height: 390px;
+  width: 260px;
+  height: 320px;
   border: 0;
   background: #36323e;
 }

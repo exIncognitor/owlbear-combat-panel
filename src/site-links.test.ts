@@ -18,8 +18,8 @@ describe("homepage and installation routing", () => {
   it("keeps extension action on the compact panel route", () => {
     const manifest = JSON.parse(readFileSync("public/manifest.json", "utf8"));
     expect(manifest.action.popover).toBe("/panel.html");
-    expect(manifest.action.width).toBe(340);
-    expect(manifest.action.height).toBe(480);
+    expect(manifest.action.width).toBe(260);
+    expect(manifest.action.height).toBe(96);
   });
   it("keeps product homepage distinct from tracker entry", () => {
     const home = readFileSync("index.html", "utf8"),
