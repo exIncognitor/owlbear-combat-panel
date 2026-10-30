@@ -152,11 +152,11 @@ describe("2014 conditions", () => {
   it("all standard conditions initially player-addable", () => {
     expect(publicDefaults.every((e) => e.access === "player")).toBe(true);
   });
-  it("adds 27 common 2014 effects and keeps the shared default catalog within budget", () => {
-    expect(publicDefaults).toHaveLength(47);
+  it("adds 28 common 2014 effects and keeps the shared default catalog within budget", () => {
+    expect(publicDefaults).toHaveLength(48);
     expect(
       validateCatalog([...publicDefaults, ...privateDefaults]),
-    ).toHaveLength(48);
+    ).toHaveLength(49);
     expect(
       new TextEncoder().encode(
         JSON.stringify({
@@ -182,6 +182,15 @@ describe("2014 conditions", () => {
       publicDefaults.find((e) => e.id === "feature-bardic-inspiration")!
         .description,
     ).toContain("DM 宣布成败前");
+  });
+  it("includes a player-addable concentration marker with the 2014 damage save", () => {
+    const concentration = publicDefaults.find((e) => e.id === "concentration")!;
+    expect(concentration.name).toBe("专注");
+    expect(concentration.access).toBe("player");
+    expect(concentration.description).toContain("体质豁免");
+    expect(concentration.description).toContain("DC 为 10");
+    expect(concentration.description).toContain("多个伤害来源分别检定");
+    expect(concentration.description).toContain("失能或死亡");
   });
   it("replaces own previous exhaustion level", () => {
     const e1 = publicDefaults.find((e) => e.id === "exhaustion-1")!,

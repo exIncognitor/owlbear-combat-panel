@@ -421,12 +421,7 @@ function App() {
                         aria-label={`移出${c.name}`}
                         title="移出角色"
                         disabled={busy}
-                        onClick={() => {
-                          if (
-                            confirm(`移出「${c.name}」？不会删除地图 Token。`)
-                          )
-                            void change(c.id, { type: "untrack" });
-                        }}
+                        onClick={() => void change(c.id, { type: "untrack" })}
                       >
                         ×
                       </button>
@@ -661,7 +656,7 @@ function App() {
           <h2>D&D 5e · 2014</h2>
           <p>
             14 种标准状态及力竭 1–6 级。力竭按 2014 规则累积；0
-            级可通过移除标签表示。另含加速、祝福、狂暴等 27 项常见效果。
+            级可通过移除标签表示。另含专注、加速、祝福、狂暴等 28 项常见效果。
           </p>
           <p>
             任何人可添加角色、修改名称和先攻，或用箭头切换前后角色。名称修改只影响本面板。地图
@@ -691,7 +686,7 @@ function App() {
               重置演示
             </button>
           )}
-          <small>Combat Panel 0.4.0</small>
+          <small>Combat Panel 0.4.1</small>
         </section>
       )}
       <dialog

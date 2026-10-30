@@ -113,5 +113,40 @@ test("toolbar icon has transparent corners and remains visible as a 24px mask", 
   await page.setContent(
     `<body style="margin:0;background:#36323e;display:flex;align-items:center;justify-content:center;gap:24px;height:180px;color:#f1edf5;font:14px sans-serif"><span style="display:block;width:28px;height:28px;background:#bca3ef;mask:url(http://127.0.0.1:5173/icon.svg) center/contain no-repeat"></span><span style="display:block;width:48px;height:48px;background:#bca3ef;mask:url(http://127.0.0.1:5173/icon.svg) center/contain no-repeat"></span><span>战斗序列</span></body>`,
   );
-  await page.screenshot({ path: "qa/v04-icon-mask.png" });
+  await page.screenshot({ path: "qa/v041-icon-mask.png" });
+});
+
+test("DM removes an entry immediately without a confirmation dialog", async ({
+  page,
+}) => {
+  const dialogs: string[] = [];
+  page.on("dialog", async (dialog) => {
+    dialogs.push(dialog.message());
+    await dialog.dismiss();
+  });
+  await page.getByRole("button", { name: "移出遗迹守卫", exact: true }).click();
+  await expect(page.locator(".character")).toHaveCount(3);
+  await expect(page.getByLabel("遗迹守卫名称", { exact: true })).toHaveCount(0);
+  expect(dialogs).toEqual([]);
+});
+
+test("player can add, inspect and remove their concentration marker", async ({
+  page,
+}) => {
+  await page.getByRole("button", { name: "玩家", exact: true }).click();
+  await page
+    .getByRole("button", { name: "给米拉 · 游侠添加状态", exact: true })
+    .click();
+  await page
+    .locator(".effect-choices")
+    .getByRole("button", { name: "专注", exact: true })
+    .click();
+  const row = page
+    .locator(".character")
+    .filter({ has: page.getByLabel("米拉 · 游侠名称") });
+  await row.getByRole("button", { name: "专注", exact: true }).click();
+  await expect(row.getByRole("tooltip")).toContainText("体质豁免");
+  await expect(row.getByRole("tooltip")).toContainText("DC 为 10");
+  await row.getByRole("button", { name: "移除", exact: true }).click();
+  await expect(row.locator(".status-chip")).toHaveCount(0);
 });

@@ -189,7 +189,7 @@ describe("live SDK adapter under mocked OBR APIs", () => {
     m.role = "PLAYER";
     m.room = {};
     const a = await ready();
-    expect(a.state.effects).toHaveLength(47);
+    expect(a.state.effects).toHaveLength(48);
     expect(a.state.effects.some((e) => e.id === "exhaustion-6")).toBe(true);
     expect(a.state.effects.some((e) => e.id === "spell-haste")).toBe(true);
     a.off();
