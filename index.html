@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#11121b" />
+    <meta
+      name="description"
+      content="战斗序列：为 Owlbear Rodeo 设计的中文先攻与状态面板。紧凑布局、D&D 5e 2014 状态、DM 效果管理，让每一回合清晰有序。"
+    />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <title>战斗序列 · 让每一回合清晰有序</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="wordmark" href="#" aria-label="战斗序列首页"
+          ><img src="/icon.svg" width="34" height="34" alt="" /><span
+            >战斗序列<small>COMBAT SEQUENCE</small></span
+          ></a
+        >
+        <nav aria-label="主页导航">
+          <a href="#features">功能</a><a href="#conditions">状态</a
+          ><a href="#install">安装</a
+          ><a class="nav-demo" href="/panel.html" target="_blank" rel="noopener"
+            >打开演示 <span aria-hidden="true">↗</span></a
+          >
+        </nav>
+      </header>
+      <main id="main">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <div class="eyebrow">
+              <span class="tiny-star" aria-hidden="true">✦</span> MADE FOR
+              OWLBEAR RODEO
+            </div>
+            <h1 id="hero-title">战斗有序，<br /><span>冒险尽兴。</span></h1>
+            <p class="hero-lead">
+              把先攻、状态和下一次行动，<br
+                class="desktop-break"
+              />收进一张不打扰地图的小面板。
+            </p>
+            <p class="hero-sub">
+              为中文跑团设计的先攻与状态扩展。少一点翻找，<br
+                class="desktop-break"
+              />多一点投入故事的时间。
+            </p>
+            <div class="hero-actions">
+              <a class="button button-gold" href="#install"
+                >安装到 Owlbear <span aria-hidden="true">→</span></a
+              ><a
+                class="button button-outline"
+                href="/panel.html"
+                target="_blank"
+                rel="noopener"
+                >先试一试 <span aria-hidden="true">↗</span></a
+              >
+            </div>
+            <div class="hero-facts">
+              <span><i aria-hidden="true">✓</i> 中文界面</span
+              ><span><i aria-hidden="true">✓</i> 2014 规则</span
+              ><span><i aria-hidden="true">✓</i> 无额外账号</span>
+            </div>
+            <p class="preview-note">
+              <span></span> 公开预览版 · 真实房间联测尚未完成
+            </p>
+          </div>
+          <div class="hero-stage" aria-label="战斗面板交互演示">
+            <svg
+              class="battle-map"
+              viewBox="0 0 640 610"
+              fill="none"
+              aria-hidden="true"
+            >
+              <defs>
+                <pattern
+                  id="grid"
+                  width="40"
+                  height="40"
+                  patternUnits="userSpaceOnUse"
+                >
+                  <path d="M40 0H0V40" stroke="#536079" stroke-opacity=".24" />
+                </pattern>
+                <radialGradient id="mist">
+                  <stop stop-color="#8272b3" stop-opacity=".18" />
+                  <stop offset="1" stop-color="#8272b3" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+              <rect width="640" height="610" fill="url(#grid)" />
+              <ellipse cx="340" cy="320" rx="300" ry="260" fill="url(#mist)" />
+              <path
+                d="M30 110 160 45 250 70 300 130 460 105 600 170M12 125 155 64 235 89 285 150 457 125 618 196M25 142 148 83 224 109 268 167 453 146 625 218M50 485 170 470 220 535 355 515 470 560 600 500M28 510 160 490 210 556 356 536 470 580 620 520"
+                stroke="#788397"
+                stroke-opacity=".2"
+              />
+              <path
+                d="M100 218h95v167h-95zm10 10h75v147h-75M453 285h102v154H453zm10 10h82v134h-82"
+                stroke="#a4a0a9"
+                stroke-opacity=".2"
+              />
+              <path
+                d="M112 248h17m-17 18h17m-17 18h17m-17 18h17m-17 18h17m-17 18h17m336-12h40m-40 12h40m-40 12h40m-40 12h40"
+                stroke="#a4a0a9"
+                stroke-opacity=".24"
+              />
+              <circle
+                cx="118"
+                cy="407"
+                r="20"
+                fill="#3b344b"
+                stroke="#c8b3de"
+                stroke-opacity=".4"
+              />
+              <path d="m111 414 7-16 7 16-7-5Z" fill="#bba7d3" />
+              <circle
+                cx="535"
+                cy="207"
+                r="17"
+                fill="#443b30"
+                stroke="#c9aa79"
+                stroke-opacity=".5"
+              />
+              <path d="m528 207 7-7 7 7-7 7Z" stroke="#d2b783" />
+              <path
+                d="m547 471 0 52m-26-26h52"
+                stroke="#b1a7c8"
+                stroke-opacity=".5"
+              />
+              <circle
+                cx="547"
+                cy="497"
+                r="18"
+                stroke="#b1a7c8"
+                stroke-opacity=".25"
+              />
+            </svg>
+            <div class="coordinate coord-top">ENCOUNTER 01 / THE RUINS</div>
+            <div class="coordinate coord-bottom">
+              YOUR NEXT MOVE, AT A GLANCE.
+            </div>
+            <div class="floating-token token-one" aria-hidden="true">✧</div>
+            <div class="floating-token token-two" aria-hidden="true">Ⅳ</div>
+            <div class="panel-preview">
+              <div class="preview-chrome">
+                <span><i></i> 交互预览</span
+                ><a
+                  href="/panel.html"
+                  target="_blank"
+                  rel="noopener"
+                  aria-label="在新标签打开演示"
+                  >↗</a
+                >
+              </div>
+              <iframe
+                src="/panel.html"
+                title="战斗序列演示，可切换 DM 和玩家视角"
+                loading="eager"
+              ></iframe>
+              <div class="preview-caption">
+                可以直接操作 · 演示不会修改你的房间
+              </div>
+            </div>
+            <div class="spec-label">
+              <span>COMPACT BY DESIGN</span><strong>340 <i>×</i> 480</strong
+              ><small>留更多空间给战场</small>
+            </div>
+          </div>
+        </section>
+        <section class="principles" aria-label="产品特点">
+          <span>小面板，大局观。</span>
+          <div>先攻顺序</div>
+          <b aria-hidden="true">✦</b>
+          <div>角色状态</div>
+          <b aria-hidden="true">✦</b>
+          <div>DM 效果库</div>
+          <b aria-hidden="true">✦</b>
+          <div>共同推进回合</div>
+        </section>
+        <section
+          class="feature-section section"
+          id="features"
+          aria-labelledby="feature-title"
+        >
+          <div class="section-intro">
+            <p class="eyebrow">LESS FRICTION. MORE ADVENTURE.</p>
+            <h2 id="feature-title">准备好下一步，<br />不用离开这一幕。</h2>
+            <p>
+              只把战斗中最需要的信息放在手边。<br />不另造一套复杂的角色卡。
+            </p>
+          </div>
+          <div class="feature-grid">
+            <article class="feature-card">
+              <div class="feature-icon" aria-hidden="true">⇅</div>
+              <span class="feature-number">01</span>
+              <h3>顺序，一目了然</h3>
+              <p>
+                按先攻自动排序，高亮当前角色。玩家与 DM
+                都能使用前后箭头，共同推进战斗。
+              </p>
+              <div class="mini-sequence" aria-hidden="true">
+                <span>18</span><b>游侠</b><i>▸</i><span>12</span><b>守卫</b>
+              </div>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon" aria-hidden="true">◇</div>
+              <span class="feature-number">02</span>
+              <h3>状态，就在角色下面</h3>
+              <p>
+                小标签承载清楚的状态说明。悬停、聚焦或点击即可查看，不再反复翻找规则。
+              </p>
+              <div class="mini-chips" aria-hidden="true">
+                <span>中毒</span><span>倒地</span><span>力竭 2</span>
+              </div>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon" aria-hidden="true">＋</div>
+              <span class="feature-number">03</span>
+              <h3>随时加入，直接编辑</h3>
+              <p>
+                手动添加角色，或从地图导入选中
+                Token。任何人都能修改面板名称与先攻，无需分配归属。
+              </p>
+              <div class="mini-field" aria-hidden="true">
+                <span>新加入的冒险者</span><b>16</b><i>＋</i>
+              </div>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon" aria-hidden="true">⌘</div>
+              <span class="feature-number">04</span>
+              <h3>你的规则，由 DM 定义</h3>
+              <p>
+                创建、修改、导入和导出效果。可设为玩家可添加，或只出现在 DM
+                的添加列表中。
+              </p>
+              <div class="mini-permissions" aria-hidden="true">
+                <span>◇ 玩家可添加</span><span>◆ 仅 DM</span>
+              </div>
+            </article>
+          </div>
+        </section>
+        <section
+          class="conditions-section section"
+          id="conditions"
+          aria-labelledby="conditions-title"
+        >
+          <div class="condition-copy">
+            <p class="eyebrow">BUILT ON THE 2014 RULES</p>
+            <h2 id="conditions-title">
+              熟悉的状态，<br /><span>已经准备好了。</span>
+            </h2>
+            <p>
+              内置 D&D 5e 2014 的全部 15 类标准状态。<br />力竭按 1–6
+              级选择，累积低等级效果，<br />不混入 2024 版规则。
+            </p>
+            <a
+              class="text-link"
+              href="/LICENSE-SRD.txt"
+              target="_blank"
+              rel="noopener"
+              >阅读规则来源与授权 <span aria-hidden="true">↗</span></a
+            >
+          </div>
+          <div class="condition-board">
+            <div class="condition-board-top">
+              <span>CONDITION LIBRARY</span><span>14 + 6 LEVELS</span>
+            </div>
+            <div class="condition-cloud" aria-label="内置标准状态">
+              <span>目盲</span><span>魅惑</span><span>耳聋</span
+              ><span>恐慌</span><span>擒抱</span><span>失能</span
+              ><span>隐形</span><span>麻痹</span><span>石化</span
+              ><span>中毒</span><span>倒地</span><span>束缚</span
+              ><span>震慑</span><span>昏迷</span>
+            </div>
+            <div class="exhaustion">
+              <div><b>力竭</b><small>等级效果累积</small></div>
+              <ol aria-label="力竭等级">
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+                <li>6</li>
+              </ol>
+            </div>
+            <p class="condition-footnote">
+              中文为 SRD 5.1 的改写摘要，可由 DM 自定义。
+            </p>
+          </div>
+        </section>
+        <section
+          class="install-section section"
+          id="install"
+          aria-labelledby="install-title"
+        >
+          <div class="center-intro">
+            <p class="eyebrow">READY FOR YOUR TABLE</p>
+            <h2 id="install-title">三个步骤，把它带上桌。</h2>
+            <p>扩展本身不需要额外账号。你仍需要自己的 Owlbear Rodeo 房间。</p>
+          </div>
+          <div class="install-steps">
+            <article>
+              <span>01</span>
+              <h3>复制安装链接</h3>
+              <p>
+                复制下方 manifest 地址。<br />它是扩展的安装入口，不是演示页面。
+              </p>
+            </article>
+            <article>
+              <span>02</span>
+              <h3>添加自定义扩展</h3>
+              <p>在 Owlbear 的扩展管理中添加自定义扩展，粘贴安装链接。</p>
+            </article>
+            <article>
+              <span>03</span>
+              <h3>在房间中启用</h3>
+              <p>将扩展启用到房间并打开场景，再点击战斗序列图标开始使用。</p>
+            </article>
+          </div>
+          <div class="install-box">
+            <div class="install-label">
+              <span>EXTENSION MANIFEST</span><small>当前站点安装地址</small>
+            </div>
+            <div class="copy-row">
+              <input
+                id="manifest-url"
+                aria-label="插件安装链接"
+                readonly
+              /><button
+                id="copy-manifest"
+                class="button button-gold"
+                type="button"
+              >
+                复制链接 <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+            <p id="copy-feedback" aria-live="polite">
+              安装前可以先试用演示；安装界面以 Owlbear 当前版本为准。
+            </p>
+          </div>
+          <div class="install-warning">
+            <span aria-hidden="true">ⓘ</span>
+            <p>
+              <b>测试状态透明说明</b
+              >公开演示的主要交互和代码测试已验证；此前真实房间的自定义扩展安装一直等待，尚未完成
+              GM／玩家联机验收。若安装卡住，请先保留原有先攻工具，不要把本预览版视为已验证的正式替代品。
+            </p>
+          </div>
+        </section>
+        <section class="boundaries section" aria-labelledby="boundaries-title">
+          <div>
+            <p class="eyebrow">CLEAR BOUNDARIES</p>
+            <h2 id="boundaries-title">什么会共享，<br />什么留在你手里。</h2>
+          </div>
+          <div class="boundary-list">
+            <article>
+              <span aria-hidden="true">01</span>
+              <div>
+                <h3>私有目录，不等于秘密状态</h3>
+                <p>
+                  DM
+                  专属目录保存在当前浏览器，不下发到玩家的效果库。但状态一旦应用到可见角色，其名称与说明会公开给大家。
+                </p>
+              </div>
+            </article>
+            <article>
+              <span aria-hidden="true">02</span>
+              <div>
+                <h3>记得备份你的自定义效果</h3>
+                <p>
+                  换设备、换浏览器、清除站点数据都可能失去私有目录。使用导出／导入保存你的规则；多个
+                  DM 的私有目录不会自动同步。
+                </p>
+              </div>
+            </article>
+            <article>
+              <span aria-hidden="true">03</span>
+              <div>
+                <h3>适合协作，不承诺防作弊</h3>
+                <p>
+                  权限检查在客户端进行，不是服务端安全边界。平台本身的房间权限仍然有效；同时修改同一角色可能发生覆盖。
+                </p>
+              </div>
+            </article>
+          </div>
+        </section>
+        <section class="closing">
+          <div class="closing-symbol" aria-hidden="true">✦</div>
+          <h2>下一回合，轮到冒险。</h2>
+          <p>从一张清楚的小面板开始。</p>
+          <a
+            class="button button-outline"
+            href="/panel.html"
+            target="_blank"
+            rel="noopener"
+            >打开交互演示 <span aria-hidden="true">↗</span></a
+          >
+        </section>
+      </main>
+      <footer class="site-footer">
+        <a class="footer-brand" href="#"
+          >战斗序列 <span>COMBAT SEQUENCE</span></a
+        >
+        <div>
+          <a href="/panel.html" target="_blank" rel="noopener">演示</a
+          ><a href="/LICENSE-SRD.txt" target="_blank" rel="noopener">规则授权</a
+          ><a href="https://www.owlbear.rodeo/" target="_blank" rel="noopener"
+            >Owlbear Rodeo ↗</a
+          >
+        </div>
+        <p>
+          独立社区扩展，非 Owlbear Rodeo 或 Wizards of the Coast 官方产品。<br />规则摘要基于
+          SRD 5.1 / CC BY 4.0。
+        </p>
+      </footer>
+    </div>
+    <noscript
+      ><p style="padding: 20px; text-align: center">
+        自动复制需要 JavaScript。安装地址为当前站点根网址加 /manifest.json。
+      </p></noscript
+    >
+    <script type="module" src="/src/landing.ts"></script>
+  </body>
+</html>

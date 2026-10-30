@@ -1,0 +1,22 @@
+# Dependencies and generated bundles
+node_modules/
+dist/
+.standalone-dist/
+standalone-demo.html
+*.zip
+
+# Tests and local previews
+test-results/
+playwright-report/
+qa/
+coverage/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+.dev.vars
+.wrangler/
+.openai/
+*.log
+.DS_Store

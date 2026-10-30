@@ -1,0 +1,13 @@
+import {readFileSync,writeFileSync,readdirSync} from 'node:fs';
+const assets=readdirSync('.standalone-dist/assets');
+const jsFile=assets.find(f=>f.endsWith('.js'));
+const cssFile=assets.find(f=>f.endsWith('.css'));
+if(!jsFile||!cssFile)throw Error('Build dist first');
+const icon='data:image/svg+xml;base64,'+readFileSync('public/icon.svg').toString('base64');
+const js=readFileSync('.standalone-dist/assets/'+jsFile,'utf8').replaceAll('"/icon.svg"',JSON.stringify(icon));
+const css=readFileSync('.standalone-dist/assets/'+cssFile,'utf8');
+let html=readFileSync('.standalone-dist/panel.html','utf8');
+html=html.replace(/<script type="module"[^>]*><\/script>/,()=>'<script type="module">'+js.replaceAll('</script','<\\/script')+'</script>');
+html=html.replace(/<link rel="stylesheet"[^>]*>/,()=>'<style>'+css+'</style>');
+writeFileSync('standalone-demo.html',html);
+console.log('Wrote standalone-demo.html (offline demo only; use dist for Owlbear)');

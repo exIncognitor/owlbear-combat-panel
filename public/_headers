@@ -1,0 +1,7 @@
+/*
+  Access-Control-Allow-Origin: *
+  Content-Security-Policy: frame-ancestors 'self' https://www.owlbear.rodeo https://owlbear.rodeo
+  ! X-Frame-Options
+
+/manifest.json
+  Cache-Control: no-cache
