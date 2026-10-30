@@ -20,3 +20,7 @@ coverage/
 .openai/
 *.log
 .DS_Store
+
+# Local recovery copies and task scratch space
+history/
+.codex-tmp/

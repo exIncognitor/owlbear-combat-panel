@@ -2,9 +2,11 @@
 
 为 **Owlbear Rodeo** 设计的中文先攻与状态扩展。紧凑的战斗面板、D&D 5e **2014** 标准状态、DM 自定义效果管理，以及独立产品主页。
 
-> 当前为预览版。代码测试及公开演示的部分交互已验证；真实房间自定义扩展安装与 GM／玩家联机验收尚未完成。请勿把它视为已通过完整平台测试的正式替代品。
+> 当前为预览版。41 个逻辑测试与 9 组浏览器用例已验证；Cloudflare 站点已发布，真实 Owlbear 安装与匿名玩家端加载通过。DM 端空白及完整 GM／玩家联测仍未完成，详见 TEST-REPORT.md。
 
 [GitHub 仓库](https://github.com/exIncognitor/owlbear-combat-panel)
+
+[产品主页](https://owlbear-combat-panel.pages.dev/) · [Owlbear 安装清单](https://owlbear-combat-panel.pages.dev/manifest.json)
 
 ## 页面
 
@@ -51,6 +53,8 @@ npm run build:standalone
 ## Cloudflare Pages
 
 构建命令 `npm run build`，输出目录 `dist`，Node.js 版本建议 `24`。完整步骤见 [DEPLOY.md](DEPLOY.md)。
+
+现有站点采用免费 Pages 静态直传，未连接 Git 自动构建；源码推送后仍须手动部署新的 dist。
 
 添加到 Owlbear 的链接为 `https://你的站点域名/manifest.json`，**不是首页或 ZIP 文件**。扩展面板路径是 `/panel.html`，不要改成产品主页。
 

@@ -2,6 +2,21 @@
 
 这是纯静态 Vite 项目，无服务端、数据库、密钥或额外账号系统。请不要把 Owlbear 登录信息、验证码、开发者令牌或本地效果库提交到仓库。
 
+## 已发布站点（2026-10-30）
+
+- 源码：https://github.com/exIncognitor/owlbear-combat-panel
+- 产品主页：https://owlbear-combat-panel.pages.dev/
+- 插件入口：https://owlbear-combat-panel.pages.dev/panel.html
+- Owlbear 安装地址：https://owlbear-combat-panel.pages.dev/manifest.json
+
+当前是 Cloudflare Pages 免费 Direct Upload 项目，上传的是已校验的 DEPLOY-READY.zip（dist 根目录的 11 个文件），对应既有产品源码提交 31afb98ffffebe7fbb48059b00ea123d8096be0c。后续测试与文档提交不改变该生产构建。
+
+**当前未连接 Git 自动部署。** GitHub 推送不会自动更新站点；产品代码修改后需要重新运行 npm ci、npm test、npm run build，并在该 Pages 项目创建生产部署，上传 dist 内容。Direct Upload 与 Git 集成是不同的项目模式；如未来改用 Git 自动构建，应另行按 Cloudflare 当前支持的迁移/新建流程处理，并由所有者完成所需授权。
+
+生产检查已确认 /panel.html 会规范化到 /panel 并保持面板内容，manifest 返回 application/json、CORS 为 *、Cache-Control 为 no-cache，页面 CSP 允许 Owlbear 嵌入且未设置 X-Frame-Options。
+
+清单已在新建专用 Owlbear 测试房间安装并启用，匿名玩家端加载成功。DM 端弹层空白及完整双端联测仍未完成，详情见 TEST-REPORT.md。既有临时 Sites 预览保持原状，不是此处的最终安装地址。
+
 ## 从 GitHub 连接 Pages
 
 1. 将本项目源代码提交到目标 GitHub 仓库。包含 `package.json`、`package-lock.json`、`index.html`、`panel.html`、`vite.config.ts`、`src/` 和 `public/`。
