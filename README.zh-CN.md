@@ -11,6 +11,7 @@
 
 ## 先体验界面
 
+- 交接包原有 standalone-demo.html 与 DEPLOY-READY.zip 保留为 v0.3 历史产物。v0.4 请使用本地开发服务器或当前 Pages 站点，新部署包名为 DEPLOY-READY-v0.4.0.zip。
 - 解压后用桌面浏览器打开 `standalone-demo.html`。这是离线演示，不连接 Owlbear 账号，不修改你的房间。
 - 演示上方可以切换 **DM 视角 / 玩家视角**；真实 Owlbear 房间中没有身份切换按钮，身份来自官方 SDK。
 - 所有示例角色都能由玩家和 DM 修改名称与先攻。
