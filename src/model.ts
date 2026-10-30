@@ -1,3 +1,5 @@
+import { commonEffects2014 } from "./effects-2014";
+
 export type Role = "GM" | "PLAYER";
 export interface Effect {
   id: string;
@@ -42,7 +44,7 @@ const exhaustionRules = [
   "速度变为 0。",
   "死亡。",
 ];
-export const publicDefaults: Effect[] = [
+export const standardConditions: Effect[] = [
   condition(
     "blinded",
     "目盲",
@@ -125,6 +127,11 @@ export const publicDefaults: Effect[] = [
     ),
   ),
 ];
+export const publicDefaults: Effect[] = [
+  ...standardConditions,
+  ...commonEffects2014,
+];
+export const MAX_EFFECTS = 80;
 export const privateDefaults: Effect[] = [
   {
     id: "gm-mark",
@@ -256,12 +263,12 @@ export function validEffect(v: unknown): v is Effect {
 export function validateCatalog(value: unknown): Effect[] {
   if (
     !Array.isArray(value) ||
-    value.length > 40 ||
+    value.length > MAX_EFFECTS ||
     !value.every(validEffect) ||
     new Set(value.map((e) => e.id)).size !== value.length
   )
     throw Error(
-      "效果文件格式不正确：最多 40 个效果，名称 1–40 字，说明最多 1200 字。",
+      `效果文件格式不正确：最多 ${MAX_EFFECTS} 个效果，名称 1–40 字，说明最多 1200 字。`,
     );
   return value.map((e) => ({
     id: e.id,

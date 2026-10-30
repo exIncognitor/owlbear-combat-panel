@@ -1,6 +1,6 @@
-D&D 5e 2014 条件摘要 / Rules attribution
+D&D 5e 2014 状态与常见效果摘要 / Rules attribution
 
-中文规则为经改写的摘要，以 SRD 5.1（2014 规则）第 358–359 页为依据，不是 2024 版规则。
+中文规则为自行概括的摘要，依据 SRD 5.1（2014 规则）的状态（第 358–359 页）、相关法术与野蛮人/吟游诗人职业特性。常见效果已对照本地 PHB 2014 资料核对版本与术语，来源索引见项目 RULES-2014.md。不是 2024 版规则。
 English rules have been paraphrased into concise Chinese summaries. This product is not an official Wizards of the Coast product or endorsement.
 
 This work includes material taken from the System Reference Document 5.1 (“SRD 5.1”) by Wizards of the Coast LLC and available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License available at https://creativecommons.org/licenses/by/4.0/legalcode.

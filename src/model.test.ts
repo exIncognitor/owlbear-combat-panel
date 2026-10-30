@@ -11,6 +11,8 @@ import {
   validName,
   validateCatalog,
   publicDefaults,
+  standardConditions,
+  MAX_EFFECTS,
   privateDefaults,
   demoCharacters,
 } from "./model";
@@ -78,6 +80,16 @@ describe("initiative navigation", () => {
       ])[0].id,
     ).toBe("a");
   });
+  it("orders one-decimal tie breakers before the matching integer", () => {
+    const chars = demoCharacters();
+    expect(
+      sorted([
+        { ...chars[0], initiative: 20 },
+        { ...chars[1], initiative: 20.5 },
+        { ...chars[2], initiative: 20.1 },
+      ]).map((c) => c.initiative),
+    ).toEqual([20.5, 20.1, 20]);
+  });
   it("starts and wraps next round", () => {
     const c = demoCharacters();
     expect(advance({ round: 1, activeId: null }, c)).toEqual({
@@ -129,7 +141,7 @@ describe("initiative navigation", () => {
 describe("2014 conditions", () => {
   it("contains 14 standard non-exhaustion conditions and six cumulative levels", () => {
     expect(
-      publicDefaults.filter((e) => !e.id.startsWith("exhaustion-")),
+      standardConditions.filter((e) => !e.id.startsWith("exhaustion-")),
     ).toHaveLength(14);
     const levels = publicDefaults.filter((e) => e.id.startsWith("exhaustion-"));
     expect(levels).toHaveLength(6);
@@ -139,6 +151,37 @@ describe("2014 conditions", () => {
   });
   it("all standard conditions initially player-addable", () => {
     expect(publicDefaults.every((e) => e.access === "player")).toBe(true);
+  });
+  it("adds 27 common 2014 effects and keeps the shared default catalog within budget", () => {
+    expect(publicDefaults).toHaveLength(47);
+    expect(
+      validateCatalog([...publicDefaults, ...privateDefaults]),
+    ).toHaveLength(48);
+    expect(
+      new TextEncoder().encode(
+        JSON.stringify({
+          "io.combat-panel.v1/catalog": publicDefaults,
+        }),
+      ).length,
+    ).toBeLessThan(15000);
+  });
+  it("retains the 2014 haste, slow and bardic-inspiration rules", () => {
+    const haste = publicDefaults.find(
+      (e) => e.id === "spell-haste",
+    )!.description;
+    expect(haste).toContain("一次武器攻击");
+    expect(haste).toContain("下一回合结束");
+    expect(
+      publicDefaults.find((e) => e.id === "spell-slow")!.description,
+    ).toContain("11+");
+    expect(
+      publicDefaults.find((e) => e.id === "feature-bardic-inspiration")!
+        .description,
+    ).toContain("10 分钟");
+    expect(
+      publicDefaults.find((e) => e.id === "feature-bardic-inspiration")!
+        .description,
+    ).toContain("DM 宣布成败前");
   });
   it("replaces own previous exhaustion level", () => {
     const e1 = publicDefaults.find((e) => e.id === "exhaustion-1")!,
@@ -181,7 +224,14 @@ describe("imports and names", () => {
       expect(() => validateCatalog(value)).toThrow();
   });
   it("rejects excessive data", () => {
-    expect(() => validateCatalog(Array(41).fill(publicDefaults[0]))).toThrow();
+    const effects = Array.from({ length: MAX_EFFECTS + 1 }, (_, i) => ({
+      ...publicDefaults[0],
+      id: `custom-${i}`,
+    }));
+    expect(validateCatalog(effects.slice(0, MAX_EFFECTS))).toHaveLength(
+      MAX_EFFECTS,
+    );
+    expect(() => validateCatalog(effects)).toThrow("最多 80");
     expect(() =>
       validateCatalog([
         { ...publicDefaults[0], description: "x".repeat(1201) },

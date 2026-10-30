@@ -42,8 +42,27 @@ function placeTooltip(el: HTMLElement) {
 function Icon({
   kind,
 }: {
-  kind: "prev" | "next" | "plus" | "settings" | "back" | "close" | "info";
+  kind:
+    "prev" | "next" | "plus" | "settings" | "back" | "close" | "info" | "reset";
 }) {
+  if (kind === "reset")
+    return (
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M4 10a8 8 0 1 1 1 7M4 4v6h6"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
   if (kind === "prev" || kind === "next")
     return (
       <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
@@ -187,6 +206,19 @@ function App() {
             <span className="round-count" title={`第 ${s.battle.round} 回合`}>
               R{s.battle.round}
             </span>
+            {gm && (
+              <button
+                className="icon"
+                aria-label="重置轮数"
+                title="重置为第 1 轮；保留角色、先攻和状态"
+                disabled={busy || !s.ready}
+                onClick={() =>
+                  run(() => adapter.setBattle({ round: 1, activeId: null }))
+                }
+              >
+                <Icon kind="reset" />
+              </button>
+            )}
             <button
               className="icon"
               aria-label="上一个角色"
@@ -287,6 +319,7 @@ function App() {
                   type="number"
                   min="-99"
                   max="999"
+                  step="0.1"
                   value={newInit}
                   onChange={(e) => setNewInit(e.target.value)}
                 />
@@ -366,6 +399,7 @@ function App() {
                       type="number"
                       min="-99"
                       max="999"
+                      step="0.1"
                       defaultValue={c.initiative}
                       disabled={busy}
                       onBlur={(e) => {
@@ -516,17 +550,6 @@ function App() {
             <button className="text-button" onClick={() => setTab("about")}>
               ⓘ
             </button>
-            {gm && (
-              <button
-                className="text-button"
-                disabled={busy}
-                onClick={() =>
-                  run(() => adapter.setBattle({ round: 1, activeId: null }))
-                }
-              >
-                重置回合
-              </button>
-            )}
           </div>
         </>
       )}
@@ -610,7 +633,7 @@ function App() {
               )
             }
           >
-            补全 2014 标准状态
+            补全 2014 常见效果
           </button>
           <input
             ref={fileRef}
@@ -638,11 +661,12 @@ function App() {
           <h2>D&D 5e · 2014</h2>
           <p>
             14 种标准状态及力竭 1–6 级。力竭按 2014 规则累积；0
-            级可通过移除标签表示。
+            级可通过移除标签表示。另含加速、祝福、狂暴等 27 项常见效果。
           </p>
           <p>
             任何人可添加角色、修改名称和先攻，或用箭头切换前后角色。名称修改只影响本面板。地图
-            Token 操作仍受房间原有权限限制。
+            Token 操作仍受房间原有权限限制。先攻支持一位小数；DM
+            可用轮数旁的重置按钮回到第 1 轮，并清除当前行动指示。
           </p>
           <p>
             只有 DM 可管理效果。玩家看不到 DM
@@ -667,7 +691,7 @@ function App() {
               重置演示
             </button>
           )}
-          <small>Combat Panel 0.3.0</small>
+          <small>Combat Panel 0.4.0</small>
         </section>
       )}
       <dialog

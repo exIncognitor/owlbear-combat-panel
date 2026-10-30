@@ -53,9 +53,11 @@ test("player picker contains standard conditions but not private definitions", a
   ).toHaveCount(0);
   await page.getByRole("button", { name: "给米拉 · 游侠添加状态" }).click();
   await expect(page.locator(".effect-choices").getByRole("button")).toHaveCount(
-    20,
+    47,
   );
   await expect(page.locator(".effect-choices")).not.toContainText("猎手印记");
+  await expect(page.locator(".effect-choices")).toContainText("加速术");
+  await expect(page.locator(".effect-choices")).toContainText("祝福术");
   await page
     .locator(".effect-choices")
     .getByRole("button", { name: "中毒", exact: true })

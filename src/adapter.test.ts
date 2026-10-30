@@ -1,5 +1,10 @@
 import { beforeEach, describe, it, expect, vi } from "vitest";
-import { KEY, publicDefaults, privateDefaults } from "./model";
+import {
+  KEY,
+  publicDefaults,
+  privateDefaults,
+  standardConditions,
+} from "./model";
 const m = vi.hoisted(() => ({
   role: "GM" as "GM" | "PLAYER",
   items: [] as any[],
@@ -184,8 +189,9 @@ describe("live SDK adapter under mocked OBR APIs", () => {
     m.role = "PLAYER";
     m.room = {};
     const a = await ready();
-    expect(a.state.effects).toHaveLength(20);
+    expect(a.state.effects).toHaveLength(47);
     expect(a.state.effects.some((e) => e.id === "exhaustion-6")).toBe(true);
+    expect(a.state.effects.some((e) => e.id === "spell-haste")).toBe(true);
     a.off();
   });
   it("rejects private effects for player even with guessed id", async () => {
@@ -217,7 +223,7 @@ describe("live SDK adapter under mocked OBR APIs", () => {
     ).rejects.toThrow("隐藏");
     await expect(
       a.adapter.change("token", { type: "initiative", value: NaN }),
-    ).rejects.toThrow("整数");
+    ).rejects.toThrow("最多一位小数");
     a.off();
   });
   it("does not permit deleting a GM-applied public status", async () => {
@@ -268,6 +274,50 @@ describe("live SDK adapter under mocked OBR APIs", () => {
     expect(m.items[0].metadata[KEY]).toBeUndefined();
     expect(m.items[0].metadata.other).toEqual({ untouched: true });
     expect(m.items).toHaveLength(2);
+    a.off();
+  });
+  it("accepts one decimal for token and manual initiative and rejects higher precision", async () => {
+    m.role = "PLAYER";
+    const a = await ready();
+    await a.adapter.change("token", { type: "initiative", value: 20.5 });
+    expect(m.items[0].metadata[KEY].initiative).toBe(20.5);
+    await a.adapter.change("token", { type: "initiative", value: 68.1 });
+    expect(m.items[0].metadata[KEY].initiative).toBe(68.1);
+    await a.adapter.addManual("小数角色", 20.5);
+    const manual = a.state.characters.find((c) => c.name === "小数角色")!;
+    await a.adapter.change(manual.id, { type: "initiative", value: 20 });
+    expect(a.state.characters.find((c) => c.id === manual.id)!.initiative).toBe(
+      20,
+    );
+    for (const value of [20.55, NaN, Infinity, -99.1, 999.1]) {
+      await expect(
+        a.adapter.change("token", { type: "initiative", value }),
+      ).rejects.toThrow();
+      await expect(a.adapter.addManual("无效先攻", value)).rejects.toThrow();
+    }
+    expect(m.items[0].metadata[KEY].initiative).toBe(68.1);
+    a.off();
+  });
+  it("resets only battle state while retaining characters, initiative and statuses", async () => {
+    const a = await ready();
+    await a.adapter.addManual("保留角色", 20.5);
+    await a.adapter.change("token", { type: "add", effectId: "spell-haste" });
+    const characters = structuredClone(a.state.characters);
+    await a.adapter.setBattle({ round: 100, activeId: "token" });
+    await a.adapter.setBattle({ round: 1, activeId: null });
+    expect(a.state.battle).toEqual({ round: 1, activeId: null });
+    expect(a.state.characters).toEqual(characters);
+    a.off();
+  });
+  it("preserves saved catalogs until the DM explicitly supplements defaults", async () => {
+    m.room[KEY + "/catalog"] = [
+      { ...standardConditions[0], description: "DM 自定义说明" },
+    ];
+    const a = await ready();
+    expect(a.state.effects.find((e) => e.id === "blinded")!.description).toBe(
+      "DM 自定义说明",
+    );
+    expect(a.state.effects.some((e) => e.id === "spell-haste")).toBe(false);
     a.off();
   });
 });

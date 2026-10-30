@@ -1,13 +1,13 @@
 {
   "name": "战斗序列 · Combat Panel",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "manifest_version": 1,
   "description": "先攻、角色状态和 DM 效果管理。状态支持悬停查看。",
   "author": "Combat Panel",
-  "icon": "/icon.svg",
+  "icon": "/icon.svg?v=0.4.0",
   "action": {
     "title": "战斗序列",
-    "icon": "/icon.svg",
+    "icon": "/icon.svg?v=0.4.0",
     "popover": "/panel.html",
     "width": 340,
     "height": 480

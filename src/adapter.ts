@@ -41,9 +41,14 @@ export interface Adapter {
   exportCatalog(): Effect[];
 }
 function validateInitiative(value: number) {
-  if (!Number.isInteger(value) || value < -99 || value > 999)
-    throw Error("先攻值必须是 -99 到 999 之间的整数");
-  return value;
+  if (
+    !Number.isFinite(value) ||
+    value < -99 ||
+    value > 999 ||
+    Math.abs(value * 10 - Math.round(value * 10)) > 1e-9
+  )
+    throw Error("先攻值须在 -99 到 999 之间，最多一位小数");
+  return Math.round(value * 10) / 10;
 }
 function mutate(
   c: Character,
