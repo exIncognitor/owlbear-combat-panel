@@ -2,14 +2,23 @@
 
 这是纯静态 Vite 项目，无服务端、数据库、密钥或额外账号系统。请不要把 Owlbear 登录信息、验证码、开发者令牌或本地效果库提交到仓库。
 
-## 已发布站点（2026-10-30）
+## 当前发布 · v0.5.3 · 2026-11-05
+
+- 在原 `owlbear-combat-panel` Pages 项目完成 Production Direct Upload，11/11 文件上传成功，Cloudflare 显示 Success。安装地址仍为 https://owlbear-combat-panel.pages.dev/manifest.json ，无需更换。
+- 浏览器实际读取生产 manifest，确认 version 和双剑图标版本参数均为 0.5.3，原生 Action 入口仍为 `/panel.html`、260 × 96 初始尺寸。
+- 产品源码提交 `404dfbe`；任务前 Git 恢复点 `4f6f3560167651f0fafefedf0df00ef28ae82c0c`。发布包 `DEPLOY-READY-v0.5.3.zip` 共 11 个文件，SHA-256 为 `c2fce8c3d47ce5730b26d7d6722e39a35676701a7fa162545d9928515b3ea15c`。发布凭证为 `qa/v053-deploy-success.png`，仅本地保留。
+- 55 项逻辑测试、20 组浏览器回归和 TypeScript/Vite 构建通过。本次未操作正式 Owlbear 房间；真实 Token 名称与联机流程由用户验收。
+- 本次仅通过浏览器确认发布结果与生产清单，未完成本版本逐文件线上哈希和响应头核对；下方 v0.5.2 的历史核验不代表当前版本结果。
+- 用户刷新整个房间后，选中旧条目对应的棋子，再点“加入选中 Token”可更新旧自动名称缓存，同时保留先攻与状态。主动在面板设置的别名保留。若只改图库文件名而地图实例仍为旧名，需修改地图棋子的名称或重新拖入。
+
+## 历史发布站点 · v0.5.2（2026-10-30）
 
 - 源码：https://github.com/exIncognitor/owlbear-combat-panel
 - 产品主页：https://owlbear-combat-panel.pages.dev/
 - 插件入口：https://owlbear-combat-panel.pages.dev/panel.html
 - Owlbear 安装地址：https://owlbear-combat-panel.pages.dev/manifest.json
 
-当前是 Cloudflare Pages 免费 Direct Upload 项目，已发布 v0.5.2。上传包为 DEPLOY-READY-v0.5.2.zip（dist 根目录的 11 个文件），产品源码提交 7e9ea71d73295a5948e54a097dd15b5273a18e31，ZIP 的 SHA-256 为 361285d0b78640936a6bf80c79ea0f87f08860cf8fd64d040fa5e8623e65805c。
+当时使用 Cloudflare Pages 免费 Direct Upload 发布 v0.5.2。上传包为 DEPLOY-READY-v0.5.2.zip（dist 根目录的 11 个文件），产品源码提交 7e9ea71d73295a5948e54a097dd15b5273a18e31，ZIP 的 SHA-256 为 361285d0b78640936a6bf80c79ea0f87f08860cf8fd64d040fa5e8623e65805c。
 
 Cloudflare 已返回部署成功；生产端 10 个可访问静态文件逐项 SHA-256 与本地构建一致（_headers 通过实际响应头验证），manifest 版本为 0.5.2。交叉双剑图标带版本查询参数 /icon.svg?v=0.5.2，动作页仍指向 /panel.html。用无敏感内容的 obrref 查询参数检查 .html 规范化跳转，参数保留并返回当前面板代码。发布成功截图为 qa/v052-deploy-success.png，仅本地保留。后续纯文档提交不改变此生产构建。
 
