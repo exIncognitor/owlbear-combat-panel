@@ -220,13 +220,17 @@ function sanitizeCharacter(
   };
 }
 function fromItem(item: Item): Character | null {
+  const metadata = item.metadata[KEY] as
+    { name?: string; nameMode?: string } | undefined;
   const label =
+    item.name?.trim() ||
     ("text" in item
       ? (item as unknown as { text?: { plainText?: string } }).text?.plainText
       : "") ||
-    item.name ||
     "未命名角色";
-  return sanitizeCharacter(item.id, item.metadata[KEY], label, !item.visible);
+  const value =
+    metadata?.nameMode === "auto" ? { ...metadata, name: label } : metadata;
+  return sanitizeCharacter(item.id, value, label, !item.visible);
 }
 const manualPrefix = KEY + "/manual/";
 export class OwlbearAdapter implements Adapter {
@@ -409,7 +413,15 @@ export class OwlbearAdapter implements Adapter {
       const next = mutate(c, op, v, effects);
       if (next)
         item.metadata[KEY] = {
+          ...(item.metadata[KEY] as object),
           name: next.name,
+          nameMode:
+            op.type === "name"
+              ? "custom"
+              : ((item.metadata[KEY] as { nameMode?: string })?.nameMode ??
+                ((item.metadata[KEY] as { name?: string })?.name
+                  ? "custom"
+                  : "auto")),
           initiative: next.initiative,
           statuses: next.statuses,
         };
@@ -455,7 +467,17 @@ export class OwlbearAdapter implements Adapter {
     await OBR.scene.items.updateItems(tokens, (draft) => {
       draft.forEach((item) => {
         if (!item.metadata[KEY])
-          item.metadata[KEY] = { initiative: 0, statuses: [] };
+          item.metadata[KEY] = {
+            initiative: 0,
+            statuses: [],
+            nameMode: "auto",
+          };
+        else {
+          const previous = item.metadata[KEY] as { nameMode?: string };
+          // Re-adding a legacy token refreshes its old cached name, preserving combat data.
+          if (!previous.nameMode)
+            item.metadata[KEY] = { ...previous, nameMode: "auto" };
+        }
       });
     });
   }

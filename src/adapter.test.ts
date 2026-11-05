@@ -276,6 +276,58 @@ describe("live SDK adapter under mocked OBR APIs", () => {
     expect(m.items).toHaveLength(2);
     a.off();
   });
+  it("uses the renamed token file name over an old label and follows later scene name changes", async () => {
+    m.items = [
+      {
+        ...item(),
+        name: "芙蕾雅",
+        text: { plainText: "旧名字" },
+        metadata: { other: 1 },
+      },
+    ];
+    m.selection = ["token"];
+    const a = await ready();
+    await a.adapter.addSelected();
+    expect(a.state.characters[0].name).toBe("芙蕾雅");
+    await a.adapter.change("token", { type: "initiative", value: 20.5 });
+    m.items[0].name = "芙蕾雅的新名字";
+    m.handlers.items(m.items);
+    expect(a.state.characters[0].name).toBe("芙蕾雅的新名字");
+    expect(a.state.characters[0].initiative).toBe(20.5);
+    a.off();
+  });
+  it("refreshes a legacy cached name on re-add but preserves explicit panel aliases and statuses", async () => {
+    const status = {
+      ...publicDefaults[0],
+      instanceId: "saved-status",
+      addedBy: "p1",
+      addedByRole: "GM",
+    };
+    m.items = [
+      {
+        ...item(),
+        name: "芙蕾雅",
+        metadata: {
+          other: 7,
+          [KEY]: { name: "旧名字", initiative: 20.5, statuses: [status] },
+        },
+      },
+    ];
+    m.selection = ["token"];
+    const a = await ready();
+    await a.adapter.addSelected();
+    expect(a.state.characters[0]).toMatchObject({
+      name: "芙蕾雅",
+      initiative: 20.5,
+      statuses: [status],
+    });
+    await a.adapter.change("token", { type: "name", value: "我的先攻别名" });
+    m.items[0].name = "又改文件名";
+    await a.adapter.addSelected();
+    expect(a.state.characters[0].name).toBe("我的先攻别名");
+    expect(m.items[0].metadata.other).toBe(7);
+    a.off();
+  });
   it("accepts one decimal for token and manual initiative and rejects higher precision", async () => {
     m.role = "PLAYER";
     const a = await ready();
